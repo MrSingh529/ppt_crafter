@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/app.py": {
+      "runtime": "vercel-python@3.11",
+      "includeFiles": ["api/default_template.pptx"]
+    }
+  }
+}
