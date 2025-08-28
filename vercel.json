@@ -1,7 +1,10 @@
 {
   "functions": {
     "api/index.py": {
-      "includeFiles": "api/default_template.pptx"
+      "runtime": "python3.11",
+      "includeFiles": [
+        "api/default_template.pptx"
+      ]
     }
   }
 }
