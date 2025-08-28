@@ -2,9 +2,7 @@
   "functions": {
     "api/index.py": {
       "runtime": "python3.11",
-      "includeFiles": [
-        "api/default_template.pptx"
-      ]
+      "includeFiles": "api/default_template.pptx"
     }
   }
 }
