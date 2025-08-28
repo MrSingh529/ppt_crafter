@@ -10,13 +10,13 @@ export default function UploadCard() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (!excel || !ppt) {
-      setError("Please select both files.");
+    if (!excel) {
+      setError("Please select the Excel file.");
       return;
     }
     const form = new FormData();
     form.append("excel", excel);
-    form.append("template", ppt);
+    if (ppt) form.append("template", ppt); // optional
 
     setLoading(true);
     try {
@@ -51,7 +51,7 @@ export default function UploadCard() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">PPT template</label>
+          <label className="block text-sm font-medium mb-1">PPT template <span className="text-neutral-500">(optional)</span></label>
           <input
             type="file"
             accept=".pptx"
@@ -71,7 +71,9 @@ export default function UploadCard() {
         {loading ? "Generating…" : "Generate PPTX"}
       </button>
 
-      <p className="mt-3 text-xs text-neutral-500">Your files are processed securely in a temporary environment. Nothing is stored after generation.</p>
+      <p className="mt-3 text-xs text-neutral-500">
+        Upload Excel only to use our default template, or include your own .pptx.
+      </p>
     </form>
   );
 }
