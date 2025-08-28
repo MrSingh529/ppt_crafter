@@ -20,7 +20,7 @@ export default function UploadCard() {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/app.py/generate", { method: "POST", body: form });
+      const res = await fetch("/api/app/generate", { method: "POST", body: form });
       if (!res.ok) {
         const msg = await res.text();
         throw new Error(msg || "Server error");

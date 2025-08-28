@@ -4,7 +4,7 @@ from flask import Flask, request, send_file, abort
 app = Flask(__name__)
 
 # Route: POST /api/app.py/generate
-@app.post("/generate")
+@app.route("/generate", methods=["POST"])
 def generate():
     if "excel" not in request.files or "template" not in request.files:
         return ("Missing files: need 'excel' and 'template'", 400)
