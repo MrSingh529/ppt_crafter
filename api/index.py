@@ -13,7 +13,6 @@ def health():
 
 # --- POST: match "/" and "/api" (works for both ways Vercel mounts the path) ---
 @app.route("/", methods=["POST"])
-@app.route("/api", methods=["POST"])
 def generate():
     if "excel" not in request.files:
         return ("Missing file: need 'excel'", 400)
