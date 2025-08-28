@@ -1,7 +1,10 @@
 {
   "functions": {
     "api/index.py": {
-      "includeFiles": "api/default_template.pptx"
+      "includeFiles": [
+        "api/default_template.pptx",
+        "requirements.txt"
+      ]
     }
   }
 }
