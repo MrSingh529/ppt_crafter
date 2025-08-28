@@ -9,17 +9,22 @@ def health():
     return {"status": "ok"}
 
 # POST /api/app  (Vercel mounts the function at /api/app)
+DEFAULT_TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), "default_template.pptx")
+
 @app.route("/", methods=["POST"])
 def generate():
-    if "excel" not in request.files or "template" not in request.files:
-        return ("Missing files: need 'excel' and 'template'", 400)
+    has_excel = "excel" in request.files
+    has_template = "template" in request.files and request.files["template"].filename
+
+    if not has_excel:
+        return ("Missing file: need 'excel'", 400)
 
     excel = request.files["excel"]
-    ppt   = request.files["template"]
+    ppt   = request.files["template"] if has_template else None
 
     if not excel.filename.lower().endswith((".xlsx", ".xls")):
         return ("Excel must be .xlsx or .xls", 400)
-    if not ppt.filename.lower().endswith(".pptx"):
+    if ppt and not ppt.filename.lower().endswith(".pptx"):
         return ("Template must be .pptx", 400)
 
     work = os.path.join(tempfile.gettempdir(), f"imarc_{uuid.uuid4().hex}")
@@ -27,9 +32,14 @@ def generate():
 
     try:
         excel_path = os.path.join(work, "datasheet_imarc.xlsx")
-        ppt_path   = os.path.join(work, "template.pptx")
         excel.save(excel_path)
-        ppt.save(ppt_path)
+
+        # Use uploaded template if present and small enough, else fall back
+        ppt_path = os.path.join(work, "template.pptx")
+        if ppt:
+            ppt.save(ppt_path)
+        else:
+            shutil.copyfile(DEFAULT_TEMPLATE_PATH, ppt_path)
 
         script_src = os.path.join(os.path.dirname(__file__), "generate_poc.py")
         script_dst = os.path.join(work, "generate_poc.py")
